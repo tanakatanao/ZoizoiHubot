@@ -1,3 +1,5 @@
+#commands:
+#  myhubot 天気 <query> - 指定した場所の天気を教えてくれる
 arrify = require('arrify')
 dateFormat = require('dateformat')
 
