@@ -1,3 +1,7 @@
+# Commands:
+#   今日も一日 - ランダムでが[んばるぞい]の文字列が生成される。
+
+
 # arrayをシャッフルする関数
 shuffle = (array) ->
   i = array.length

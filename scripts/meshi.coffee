@@ -1,3 +1,14 @@
+# Description:
+#   ぐるなびAPIを活用して、指定した付近のランチ可能な店を持ってくる
+#
+# Configuration
+#   HUBOT_GURUNAVI_APP_ID - Optional. Search safety level.
+#   HUBOT_GURUNAVI_AREACODE_S - The URL to use when API fails. `{q}` will be replaced with the query string.
+#
+# Commands:
+#   myhubot めし <query> - クエリにマッチするカテゴリのお店がランダムで表示される。
+
+
 request = require('request')
 dateFormat = require('dateformat')
 

@@ -1,3 +1,6 @@
+# Commands:
+#   hubot <query>線 - 対象の路線が遅延しているかを教えてくれる
+
 arrify = require('arrify')
 dateFormat = require('dateformat')
 request = require('request')
@@ -40,23 +43,7 @@ module.exports = (robot) ->
           return send '#general',"https://transit.yahoo.co.jp/traininfo/detail/71/0/"
         return)
 
-  new cronJob('0 30 7 * * 1-5', () ->
-    checkTrainDelay()
-  ).start
-
-  new cronJob('0 0 8 * * 1-5', () ->
-    checkTrainDelay()
-  ).start
-
-  new cronJob('0 0 17 * * 1-5', () ->
-    checkTrainDelay()
-  ).start
-
-  new cronJob('0 30 17 * * 1-5', () ->
-    checkTrainDelay()
-  ).start
-
-  new cronJob('0 0 18 * * 1-5', () ->
+  new cronJob('0 30 7,8,16,17 * * 1-5', () ->
     checkTrainDelay()
   ).start
 
