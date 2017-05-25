@@ -35,3 +35,6 @@ module.exports = (robot) ->
   robot.hear /明日も一日/i, (msg) ->
         msg.send 'がんばるぞい' # 発言をする
         msg.send 'http://livedoor.blogimg.jp/jin115/imgs/a/f/afed00c3.jpg'
+
+  robot.hear /zoi (.*)/i, (msg) ->
+        msg.send "@#{msg.match[1]} https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQV_GUViX6wFWeQlEoEv-L4KUQa0xHD9f_Vy9D-we5qoZ_IzLbP"
