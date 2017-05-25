@@ -15,17 +15,14 @@
 
 
 module.exports = (robot) ->
-rts = (robot) ->
-
-  robot.hear /(.*?) rr/i, (msg) ->
-    imageMe msg, msg.match[1], true, (url) ->
-      msg.send url
 
   robot.hear /(.*?) ir/i, (msg) ->
-    imageMe msg, msg.match[1], false, (url) ->
+    imageMe msg, msg.match[1], (url) ->
       msg.send url
 
-imageMe = (msg, query,random, cb) ->
+imageMe = (msg, query, animated, faces, cb) ->
+  cb = animated if typeof animated == 'function'
+  cb = faces if typeof faces == 'function'
   googleCseId = process.env.HUBOT_GOOGLE_CSE_ID
   if googleCseId
     # Using Google Custom Search API
@@ -51,7 +48,7 @@ imageMe = (msg, query,random, cb) ->
         if err
           if res.statusCode is 403
             msg.send "Daily image quota exceeded, using alternate source."
-            deprecatedImage(msg, query,random, cb)
+            deprecatedImage(msg, query, animated, faces, cb)
           else
             msg.send "Encountered an error :( #{err}"
           return
@@ -60,12 +57,8 @@ imageMe = (msg, query,random, cb) ->
           return
         response = JSON.parse(body)
         if response?.items
-          if random
-            image = msg.random response.items
-            cb ensureResult(image.link)
-          else
-            image = response.items[0]
-            cb ensureResult(image.link) 
+          image = msg.random response.items
+          cb ensureResult(image.link, animated)
         else
           msg.send "Oops. I had trouble searching '#{query}'. Try later."
           ((error) ->
@@ -76,18 +69,23 @@ imageMe = (msg, query,random, cb) ->
   else
     msg.send "Google Image Search API is not longer available. " +
       "Please [setup up Custom Search Engine API](https://github.com/hubot-scripts/hubot-google-images#cse-setup-details)."
-    deprecatedImage(msg, query, random, cb)
+    deprecatedImage(msg, query, animated, faces, cb)
 
-deprecatedImage = (msg, query, random, cb) ->
+deprecatedImage = (msg, query, animated, faces, cb) ->
   # Show a fallback image
   imgUrl = process.env.HUBOT_GOOGLE_IMAGES_FALLBACK ||
     'http://i.imgur.com/CzFTOkI.png'
   imgUrl = imgUrl.replace(/\{q\}/, encodeURIComponent(query))
-  cb ensureResult(imgUrl)
+  cb ensureResult(imgUrl, animated)
 
 # Forces giphy result to use animated version
-ensureResult = (url) ->
-  ensureImageExtension url
+ensureResult = (url, animated) ->
+  if animated is true
+    ensureImageExtension url.replace(
+      /(giphy\.com\/.*)\/.+_s.gif$/,
+      '$1/giphy.gif')
+  else
+    ensureImageExtension url
 
 # Forces the URL look like an image URL by adding `#.png`
 ensureImageExtension = (url) ->
@@ -95,4 +93,3 @@ ensureImageExtension = (url) ->
     url
   else
     "#{url}#.png"
-
