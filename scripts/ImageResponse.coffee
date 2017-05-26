@@ -24,7 +24,7 @@ module.exports = (robot) ->
     imageMe msg, msg.match[1], true, (url) ->
       msg.send url
 
-imageMe = (msg, query, animated, faces, cb) ->
+imageMe = (msg, query,random, animated, faces, cb) ->
   cb = animated if typeof animated == 'function'
   cb = faces if typeof faces == 'function'
   googleCseId = process.env.HUBOT_GOOGLE_CSE_ID
