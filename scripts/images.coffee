@@ -18,9 +18,8 @@ module.exports = (robot) ->
     imageMe msg, msg.match[3], (url) ->
       msg.send url
   
-  robot.respond /疲れた(.*?)/i, (msg) ->
-    msg.send 'お疲れですぞい？'
-    msg.send 'これでも見て元気出すぞい'
+  robot.hear /疲れた(.*?)/i, (msg) ->
+    msg.send 'お疲れですぞい？\nこれでも見て元気出すぞい'
     word = msg.random ['癒される','可愛い','女の子','猫','犬','カピバラ','アルパカ','アルパカ けものフレンズ','サーバルちゃん']
     imageMe msg,word, (url) ->
       msg.send url
