@@ -27,7 +27,6 @@ module.exports = (robot) ->
 imageMe = (msg, query, animated, faces, cb) ->
   cb = animated if typeof animated == 'function'
   cb = faces if typeof faces == 'function'
-  random = true
   googleCseId = process.env.HUBOT_GOOGLE_CSE_ID
   if googleCseId
     # Using Google Custom Search API
