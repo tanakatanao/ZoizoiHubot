@@ -17,12 +17,17 @@
 module.exports = (robot) ->
 
   robot.hear /(.*?) ir/i, (msg) ->
-    imageMe msg, msg.match[1], (url) ->
+    imageMe msg, msg.match[1], false, (url) ->
+      msg.send url
+  
+  robot.hear /(.*?) rr/i, (msg) ->
+    imageMe msg, msg.match[1], true, (url) ->
       msg.send url
 
 imageMe = (msg, query, animated, faces, cb) ->
   cb = animated if typeof animated == 'function'
   cb = faces if typeof faces == 'function'
+  random = true
   googleCseId = process.env.HUBOT_GOOGLE_CSE_ID
   if googleCseId
     # Using Google Custom Search API
@@ -57,7 +62,10 @@ imageMe = (msg, query, animated, faces, cb) ->
           return
         response = JSON.parse(body)
         if response?.items
-          image = msg.random response.items
+          if random
+            image = msg.random response.items
+          else
+            image = response.items[0]
           cb ensureResult(image.link, animated)
         else
           msg.send "Oops. I had trouble searching '#{query}'. Try later."
