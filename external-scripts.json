@@ -8,4 +8,5 @@
   "hubot-redis-brain",
   "hubot-rules",
   "hubot-shipit"
+  "hubot-slack-rainfall-alert"
 ]
