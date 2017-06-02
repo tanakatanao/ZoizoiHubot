@@ -2,8 +2,8 @@ send_with_google = (msg, path, query = {}) ->
   msg.http(path).query(query).get() (err, res, body) ->
     json = JSON.parse body
     if json.items.length > 0
-      items = json.items[0]
-      msg.send "#{items[0].link}"
+      item = json.items[0]
+      msg.send "#{item}"
 
 
 module.exports = (robot) ->
