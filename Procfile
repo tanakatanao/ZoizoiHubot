@@ -1,1 +1,1 @@
-web: bin/hubot -a slack --name zoiko --ailias ぞいこ
+web: bin/hubot -a slack --name zoiko --alias ぞいこ
