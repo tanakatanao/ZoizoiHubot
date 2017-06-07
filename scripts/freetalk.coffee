@@ -22,6 +22,10 @@ module.exports = (robot) ->
     KEY_DOCOMO_CONTEXT = 'docomo-talk-context#{user_name}'
     context = robot.brain.get KEY_DOCOMO_CONTEXT || ''
 
+    ## modeを読み込む
+    KEY_DOCOMO_MODE = ''
+    mode = robot.brain.get KEY_DOCOMO_MODE || ''
+
     ## 前回会話してからの経過時間調べる
     KEY_DOCOMO_CONTEXT_TTL = 'docomo-talk-context-ttl#{user_name}'
     TTL_MINUTES = 20
