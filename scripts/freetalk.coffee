@@ -31,6 +31,7 @@ module.exports = (robot) ->
     ## 前回会話してから一定時間経っていたらコンテキストを破棄
     if diff_minutes > TTL_MINUTES
       context = ''
+      mode = ''
 
     url = 'https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue?APIKEY=' + DOCOMO_API_KEY
     request = require('request');
@@ -46,8 +47,11 @@ module.exports = (robot) ->
         ## ContextIDの保存
         robot.brain.set KEY_DOCOMO_CONTEXT, body.context
 
+        ##モードの保存
+        robot.brain.set KEY_DOCOMO_MODE, body.mode
+
         ## 会話発生時間の保存
         now_msec = new Date().getTime()
-        robot.brain.set KEY_DOCOMO_CONTEXT_TTL, now_msec
+        robot.brain.set KEY_DOCOMO_CONTEXT_TTL, now_msec	
 
         msg.send body.utt

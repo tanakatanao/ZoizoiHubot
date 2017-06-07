@@ -42,3 +42,10 @@ module.exports = (robot) ->
         
   robot.hear /zoi (.*)/i, (msg) ->
         msg.send "@#{msg.match[1]} https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQV_GUViX6wFWeQlEoEv-L4KUQa0xHD9f_Vy9D-we5qoZ_IzLbP"
+
+  robot.respond /hello/i, (msg) ->
+        cmds = []
+        for help in robot.helpCommands()
+          cmd = help.split(' ')[1]
+          cmds.push cmd if cmds.indexOf(cmd) is -1
+        msg.send cmds
