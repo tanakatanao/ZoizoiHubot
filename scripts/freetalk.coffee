@@ -19,15 +19,17 @@ module.exports = (robot) ->
     return unless DOCOMO_API_KEY && message
 
     ## ContextIDを読み込む
-    KEY_DOCOMO_CONTEXT = 'docomo-talk-context#{user_name}'
+    KEY_DOCOMO_CONTEXT = "docomo-talk-context#{user_name}"
     context = robot.brain.get KEY_DOCOMO_CONTEXT || ''
 
     ## modeを読み込む
-    #KEY_DOCOMO_MODE = 'dialog#{user_name}'
-    #mode = robot.brain.get KEY_DOCOMO_MODE || ''
+    KEY_DOCOMO_MODE = "dialog#{user_name}"
+    console.log("キーはこれです : #{KEY_DOCOMO_MODE}")
+    mode = robot.brain.get KEY_DOCOMO_MODE || ''
+    console.log("modeを設定しました : #{mode}")
 
     ## 前回会話してからの経過時間調べる
-    KEY_DOCOMO_CONTEXT_TTL = 'docomo-talk-context-ttl#{user_name}'
+    KEY_DOCOMO_CONTEXT_TTL = "docomo-talk-context-ttl#{user_name}"
     TTL_MINUTES = 20
     old_msec = robot.brain.get KEY_DOCOMO_CONTEXT_TTL
     diff_minutes = getTimeDiffAsMinutes old_msec
@@ -45,15 +47,16 @@ module.exports = (robot) ->
         utt: message
         nickname: user_name if user_name
         sex: '男'
-        #mode: mode if mode
+        mode: mode if mode
         context: context if context
       , (err, response, body) ->
         ## ContextIDの保存
         robot.brain.set KEY_DOCOMO_CONTEXT, body.context
 
         ##モードの保存
-        #robot.brain.set KEY_DOCOMO_MODE, body.mode
-
+        console.log("モードを保存します : #{body.mode}")
+        robot.brain.set KEY_DOCOMO_MODE, body.mode
+	
         ## 会話発生時間の保存
         now_msec = new Date().getTime()
         robot.brain.set KEY_DOCOMO_CONTEXT_TTL, now_msec	
